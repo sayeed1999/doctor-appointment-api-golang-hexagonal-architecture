@@ -5,9 +5,9 @@ database:
 
 # Server settings
 
-# Maling setting (you have to do a bit of hard work to set up mailing from your own gmail and device)
+# Maling setting
 mail:
     smtpHost: "smtp.gmail.com"
     smtpPort: 587
-    senderEmail: "yourgmail"
-    password: "generateadevicespecificpasswordfromgmail"
+    senderEmail: "mdsayeedrahman1999@gmail.com"
+    password: "ejuwhtfpmuonegef"
