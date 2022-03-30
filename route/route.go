@@ -13,4 +13,7 @@ func InitializeRoutes(router *gin.Engine) {
 	router.POST("/doctors/:id/make-appointment", handlers.DoctorHandler.RequestAppointmentToDoctor)
 	router.GET("/doctors/fromDate/:fromDate/toDate/:toDate", handlers.DoctorHandler.GetDoctorsByAvailability) // format should be: /doctors/fromDate/2022-03-01/toDate/2022-04-30
 
+	// defining routes for accounts
+	router.POST("/account/register", handlers.AccountHandler.Register)
+
 }

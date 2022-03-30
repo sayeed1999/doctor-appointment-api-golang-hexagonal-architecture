@@ -20,7 +20,7 @@ type doctorHandler struct {
 	*base
 }
 
-func (d *doctorHandler) Initialize() {
+func (h *doctorHandler) Initialize() {
 	DoctorHandler = &doctorHandler{
 		base: Base,
 	}
@@ -77,11 +77,11 @@ func (h *doctorHandler) RequestAppointmentToDoctor(c *gin.Context) {
 	var apnt vm.AppointmentVM
 	var unmarshalErr *json.UnmarshalTypeError
 
-	decoder := json.NewDecoder(c.Request.Body)
-	decoder.DisallowUnknownFields()
-	err := decoder.Decode(&apnt)
+	// decoder := json.NewDecoder(c.Request.Body)
+	// decoder.DisallowUnknownFields()
+	// err := decoder.Decode(&apnt)
 
-	if err != nil {
+	if err := helpers.DecodeJSON(c.Request.Body, &apnt); err != nil {
 		fmt.Println(err.Error()) // badly needed to understand where error occurred while parsing the form data
 		if errors.As(err, &unmarshalErr) {
 			helpers.Response(c, 400, "Bad Request. Wrong Type provided for field "+unmarshalErr.Field, nil)

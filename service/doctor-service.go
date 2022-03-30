@@ -18,11 +18,10 @@ type doctorService struct {
 	*base
 }
 
-func (s *doctorService) Initialize() *doctorService {
+func (s *doctorService) Initialize() {
 	DoctorService = &doctorService{
 		base: Base,
 	}
-	return DoctorService
 }
 
 func (s *doctorService) GetAllDoctors() ([]domain.Doctor, int, string) {

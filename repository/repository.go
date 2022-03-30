@@ -1,6 +1,9 @@
 package repository
 
 import (
+	"reflect"
+
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/domain"
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
 )
@@ -18,7 +21,7 @@ func newSqlServerClient(connStr string) (*gorm.DB, error) {
 	db, err := gorm.Open(sqlserver.Open(connStr), &gorm.Config{})
 
 	if err == nil {
-		defer KeepAutoMigrationUpAndRunning(db)
+		KeepAutoMigrationUpAndRunning(db)
 	}
 	return db, err
 }
@@ -36,6 +39,20 @@ func (r *repository) InitializeRepository(connStr string) (*repository, error) {
 		db: db,
 	}
 	return Repository, nil
+}
+
+func (r *repository) Create(model interface{}) error {
+	// We use type switches in golang to identify which entity it is, because gorm is failing ..
+	T := reflect.TypeOf(model)
+	switch T {
+	case reflect.TypeOf(domain.User{}):
+		user := model.(domain.User)
+		return Repository.db.Create(&user).Error
+	case reflect.TypeOf(domain.Doctor{}):
+		doctor := model.(domain.Doctor)
+		return Repository.db.Create(&doctor).Error
+	}
+	return nil
 }
 
 func (r *repository) FindById(receiver interface{}, id int) error {

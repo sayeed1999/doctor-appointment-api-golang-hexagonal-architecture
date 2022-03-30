@@ -32,10 +32,12 @@ func main() {
 	// Initializing services ...
 	service.Base.Initialize(repo, redisClient, &context, mailChan)
 	service.DoctorService.Initialize()
+	service.AccountService.Initialize()
 
 	// Initializing handlers ...
 	handlers.Base.Initialize()
 	handlers.DoctorHandler.Initialize()
+	handlers.AccountHandler.Initialize()
 
 	// Creates a gin router with default middleware: logger and recovery (crash-free) middleware
 	router := gin.Default()

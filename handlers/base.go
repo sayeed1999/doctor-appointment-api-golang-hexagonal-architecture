@@ -4,7 +4,6 @@ var Base *base
 
 type base struct{}
 
-func (b *base) Initialize() *base {
+func (b *base) Initialize() {
 	Base = &base{}
-	return Base
 }

@@ -1,12 +1,11 @@
 package repository
 
 type IRepository interface {
+	Create(model interface{}) error
 
-	// Create(model interface{}) (interface{}, int, string)
+	// Update(id int, model interface{}) error
 
-	// Update(id int, model interface{}) (interface{}, int, string)
-
-	// Delete(id int) (interface{}, int, string)
+	// Delete(id int) error
 
 	FindById(receiver interface{}, id int) error
 
