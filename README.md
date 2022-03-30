@@ -1,4 +1,4 @@
-# doctor-appointment-api-golang
+# Doctor Appointment Api (golang)
 
 ---
 
