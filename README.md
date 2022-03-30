@@ -2,6 +2,7 @@
 
 ## Doctor Appointment Api
 
+To run the project from your pc, first git clone it, then run "go mod tidy" which installs all dependencies...
 ---
 
 In this golang project, I tried to apply all the enterprise level software design practices that I know e.g hexagonal architecture, onion architecture, clean architecture, CQRS, DDD, generic repository pattern..
