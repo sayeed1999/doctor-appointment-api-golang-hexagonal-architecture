@@ -1,4 +1,4 @@
-# Doctor Appointment Api (golang)
+# Golang Project Architecture | Hexagonal Architecture - Onion Architecture - Generic Repository Pattern
 
 ---
 
