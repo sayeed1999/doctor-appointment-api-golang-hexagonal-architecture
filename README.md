@@ -2,7 +2,7 @@
 
 ## Doctor Appointment Api
 
-To run the project from your pc, first git clone it, then run "go mod tidy" which installs all dependencies...
+To run the project from your pc, first git clone it, then run **go mod tidy** which installs all dependencies...
 
 ---
 
