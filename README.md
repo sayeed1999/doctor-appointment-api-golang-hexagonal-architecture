@@ -8,25 +8,25 @@ In this golang project, I tried to apply all the enterprise level software desig
 
 ## Golang Packages used:-
 
-- gorm (ORM to communicate with the database)
-- gin/gonic (golang framework to build apis)
-- gomail (golang package for sending emails from your gmail)
-- go-redis (golang package which implements redis)
+- **gorm** (ORM to communicate with the database)
+- **gin/gonic** (golang framework to build apis)
+- **gomail** (golang package for sending emails from your gmail)
+- **go-redis** (golang package which implements redis)
 
 ---
 
 ## Architectures targeted:-
 
-- Generic repository pattern (centralizes a common repository for database operations)
-- Onion architecture (segregates a monolith project into controller layer, buisness layer, data access layer, domain/entity layer)
-- Hexagonal architecture
+- **Generic repository pattern** (centralizes a common repository for database operations)
+- **Onion architecture** (segregates a monolith project into controller layer, buisness layer, data access layer, domain/entity layer)
+- **Hexagonal architecture**
 
 ---
 
 ## Project architecture explained:-
 
-- go.mod & go.sum file are responsible for all the dependencies of the project
-- The project runs when you run "go run main.go" from the root directory
+- **go.mod** & **go.sum** file are responsible for all the dependencies of the project
+- The project runs when you run **go run main.go** from the root directory
 - Program execution starts from main.go
 - First, the configuration files are initialized from ./config dir
 - Second, a channel for sending mails gets created and a new goroutine is fired that keeps listening for mail sending tasks
