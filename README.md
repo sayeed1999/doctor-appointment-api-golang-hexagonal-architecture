@@ -1,4 +1,4 @@
-# Golang Project Architecture | Hexagonal Architecture - Onion Architecture - Generic Repository Pattern
+# Golang Enterprise Project Structure | Hexagonal Architecture - Onion Architecture - Generic Repository Pattern
 
 ---
 
