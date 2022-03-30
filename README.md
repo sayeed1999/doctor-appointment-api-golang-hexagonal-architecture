@@ -2,7 +2,12 @@
 
 ## Doctor Appointment Api
 
-To run the project from your pc, first git clone it, then run **go mod tidy** which installs all dependencies...
+To run the project from your pc, 
+
+- first, you have to get golang installed on your system
+- second, git clone it, then run **go mod tidy** which installs all dependencies
+- third, run **go run main.go** in terminal from root dir
+- since, i have removed config.yaml file in git repo, you have to create ./config/config.yaml file and write it matching the Config struct in ./config/config.go file
 
 ---
 
@@ -30,7 +35,6 @@ In this golang project, I tried to apply all the enterprise level software desig
 ## Project architecture explained:-
 
 - **go.mod** & **go.sum** file are responsible for all the dependencies of the project
-- The project runs when you run **go run main.go** from the root directory
 - Program execution starts from main.go
 - First, the configuration files are initialized from ./config dir
 - Second, a channel for sending mails gets created and a new goroutine is fired that keeps listening for mail sending tasks
