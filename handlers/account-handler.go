@@ -32,3 +32,19 @@ func (h *accountHandler) Register(c *gin.Context) {
 	user, code, text := service.AccountService.Register(user)
 	helpers.Response(c, code, text, user)
 }
+
+func (h *accountHandler) Login(c *gin.Context) {
+	// var user domain.User
+	var loginData map[string]string
+
+	if err := helpers.DecodeJSON(c.Request.Body, &loginData); err != nil {
+		helpers.Response(c, 400, "", nil)
+		return
+	}
+
+	email := loginData["email"]
+	password := loginData["password"]
+
+	token, code, text := service.AccountService.Login(email, password)
+	helpers.Response(c, code, text, token)
+}

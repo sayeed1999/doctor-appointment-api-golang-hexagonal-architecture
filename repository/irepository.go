@@ -9,6 +9,8 @@ type IRepository interface {
 
 	FindById(receiver interface{}, id int) error
 
+	FindFirst(receiver interface{}, where string, args ...interface{}) error
+
 	FindAll(models interface{}, where string, args ...interface{}) error
 
 	ExecuteRawSqlAndScan(receiver interface{}, query string, args ...interface{}) error

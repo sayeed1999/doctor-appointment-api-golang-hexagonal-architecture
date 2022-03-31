@@ -15,5 +15,5 @@ func InitializeRoutes(router *gin.Engine) {
 
 	// defining routes for accounts
 	router.POST("/account/register", handlers.AccountHandler.Register)
-
+	router.POST("/account/login", handlers.AccountHandler.Login)
 }

@@ -59,8 +59,12 @@ func (r *repository) FindById(receiver interface{}, id int) error {
 	return Repository.db.First(receiver, id).Error
 }
 
+func (r *repository) FindFirst(receiver interface{}, where string, args ...interface{}) error {
+	return Repository.db.Where(where, args...).Limit(1).Find(receiver).Error
+}
+
 func (r *repository) FindAll(models interface{}, where string, args ...interface{}) error {
-	return Repository.db.Where(where, args).Find(models).Error
+	return Repository.db.Where(where, args...).Find(models).Error
 }
 
 func (r *repository) ExecuteRawSqlAndScan(receiver interface{}, query string, args ...interface{}) error {
