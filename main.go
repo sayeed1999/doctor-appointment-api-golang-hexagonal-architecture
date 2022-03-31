@@ -35,7 +35,7 @@ func main() {
 	service.AccountService.Initialize()
 
 	// Initializing handlers ...
-	handlers.Base.Initialize()
+	handlers.Base.Initialize(conf)
 	handlers.DoctorHandler.Initialize()
 	handlers.AccountHandler.Initialize()
 
