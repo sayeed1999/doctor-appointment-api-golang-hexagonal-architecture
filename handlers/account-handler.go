@@ -28,6 +28,7 @@ func (h *accountHandler) Register(c *gin.Context) {
 		helpers.Response(c, 400, "", nil)
 		return
 	}
+
 	user, code, text := service.AccountService.Register(user)
 	helpers.Response(c, code, text, user)
 }

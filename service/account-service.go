@@ -1,11 +1,14 @@
 package service
 
 import (
+	"math/rand"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/domain"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/validators"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var AccountService *accountService
@@ -33,6 +36,12 @@ func (s *accountService) Register(user domain.User) (domain.User, int, string) {
 	//TODO:- currently the password is hard-coded, should not be in production
 	user.Password = "123456Aa"
 	// phone validation
+
+	// encrypting password with bcrypt
+	rand.Seed(time.Now().UnixNano())
+	user.Cost = rand.Intn(20) + 1
+	bytes, _ := bcrypt.GenerateFromPassword([]byte(user.Password), user.Cost)
+	user.Password = string(bytes)
 
 	if err := s.repo.Create(user); err != nil {
 		return user, http.StatusBadRequest, err.Error()

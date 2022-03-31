@@ -5,9 +5,10 @@ import (
 )
 
 type User struct {
-	Fullname   string `json:"fullname"`
-	Email      string `json:"email"`
-	Phone      int    `json:"phone"`
-	Password   string `json:"-"`
-	gorm.Model `json:"model"`
+	Fullname string `json:"fullname"`
+	Email    string `json:"email"`
+	Phone    int    `json:"phone"`
+	Password string `json:"-"`
+	Cost     int    `json:"-"` // Cost is the cost by which we encrypted Password via bcrypt
+	gorm.Model
 }
