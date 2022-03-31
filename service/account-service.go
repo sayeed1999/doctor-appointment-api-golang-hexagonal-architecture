@@ -3,12 +3,12 @@ package service
 import (
 	"math/rand"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/domain"
-	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/domain/vm"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/validators"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -51,28 +51,40 @@ func (s *accountService) Register(user domain.User) (domain.User, int, string) {
 	return user, http.StatusCreated, "New account has been created"
 }
 
-func (s *accountService) Login(email string, password string) (vm.Token, int, string) {
+func (s *accountService) Login(email string, password string) (string, int, string) {
 	var user domain.User
 
 	// find if the email exists
 	if err := s.repo.FindFirst(&user, "email = ?", email); err != nil {
-		return vm.Token{}, http.StatusInternalServerError, ""
+		return "", http.StatusInternalServerError, ""
 	}
 	if user.ID == 0 {
-		return vm.Token{}, http.StatusNotFound, "This email is not yet registered!"
+		return "", http.StatusNotFound, "This email is not yet registered!"
 	}
+
 	// hashedPasswordInBytes, _ := bcrypt.GenerateFromPassword([]byte(password), user.Cost)
 	// hashedPassword := string(hashedPasswordInBytes)
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
-		return vm.Token{}, http.StatusBadRequest, "Your password doesn't match!"
+		return "", http.StatusBadRequest, "Your password doesn't match!"
 	}
 
 	claims := jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
-		Issuer:    string(user.ID),
+		Issuer:    strconv.Itoa(int(user.ID)),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, _ := token.SignedString([]byte("secureSecretKey"))
 
-	return vm.Token{Token: signedToken}, http.StatusAccepted, ""
+	return signedToken, http.StatusAccepted, ""
+}
+
+func (s *accountService) GetUserById(id int) (domain.User, int, string) {
+	var user domain.User
+
+	_ = s.repo.FindById(&user, id)
+
+	if user.ID == 0 {
+		return user, http.StatusNotFound, "User not found"
+	}
+	return user, http.StatusFound, ""
 }

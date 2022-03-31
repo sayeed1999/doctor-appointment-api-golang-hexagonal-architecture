@@ -1,9 +1,14 @@
 package handlers
 
 import (
+	"net/http"
+	"strconv"
+
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/domain"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/helpers"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/pkg"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/service"
 )
 
@@ -24,7 +29,7 @@ func (h *accountHandler) Register(c *gin.Context) {
 	// var data map[string]interface{}
 	var user domain.User
 
-	if err := helpers.DecodeJSON(c.Request.Body, &user); err != nil {
+	if err := pkg.DecodeJSON(c.Request.Body, &user); err != nil {
 		helpers.Response(c, 400, "", nil)
 		return
 	}
@@ -37,7 +42,7 @@ func (h *accountHandler) Login(c *gin.Context) {
 	// var user domain.User
 	var loginData map[string]string
 
-	if err := helpers.DecodeJSON(c.Request.Body, &loginData); err != nil {
+	if err := pkg.DecodeJSON(c.Request.Body, &loginData); err != nil {
 		helpers.Response(c, 400, "", nil)
 		return
 	}
@@ -46,5 +51,38 @@ func (h *accountHandler) Login(c *gin.Context) {
 	password := loginData["password"]
 
 	token, code, text := service.AccountService.Login(email, password)
-	helpers.Response(c, code, text, token)
+	// fmt.Println("token: ", token)
+	c.SetCookie("jwttoken", token, 60*60*24, "/", "localhost", false, true)
+
+	helpers.Response(c, code, text, nil)
+}
+
+func (h *accountHandler) GetAuthenticatedUser(c *gin.Context) {
+	cookie, err := c.Cookie("jwttoken")
+	if err != nil {
+		helpers.Response(c, http.StatusUnauthorized, "", nil)
+		// helpers.Response(c, http.StatusUnauthorized, err.Error(), nil)
+		return
+	}
+
+	claims := jwt.StandardClaims{}
+	_, err = jwt.ParseWithClaims(cookie, &claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte("secureSecretKey"), nil
+	})
+	if err != nil {
+		helpers.Response(c, http.StatusUnauthorized, "", nil)
+		return
+	}
+
+	// token := tokenWithClaims.Raw; fmt.Println(token)
+	// if claims.ExpiresAt <= time.Now().Unix() {
+	// 	helpers.Response(c, http.StatusUnauthorized, "Login state has been expired!", nil)
+	// 	return
+	// }
+
+	userid, _ := strconv.ParseInt(claims.Issuer, 10, 32)
+	user, code, text := service.AccountService.GetUserById(int(userid))
+
+	helpers.Response(c, code, text, user)
+	return
 }

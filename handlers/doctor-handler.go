@@ -81,7 +81,7 @@ func (h *doctorHandler) RequestAppointmentToDoctor(c *gin.Context) {
 	// decoder.DisallowUnknownFields()
 	// err := decoder.Decode(&apnt)
 
-	if err := helpers.DecodeJSON(c.Request.Body, &apnt); err != nil {
+	if err := pkg.DecodeJSON(c.Request.Body, &apnt); err != nil {
 		fmt.Println(err.Error()) // badly needed to understand where error occurred while parsing the form data
 		if errors.As(err, &unmarshalErr) {
 			helpers.Response(c, 400, "Bad Request. Wrong Type provided for field "+unmarshalErr.Field, nil)
