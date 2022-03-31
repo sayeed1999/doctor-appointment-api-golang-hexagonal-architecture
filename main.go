@@ -26,11 +26,11 @@ func main() {
 	mailing.ListenForMail(mailChan, conf.Mail.SmtpHost, conf.Mail.SmtpPort, conf.Mail.SenderEmail, conf.Mail.Password)
 
 	repo, _ := repository.Repository.InitializeRepository(conf.Database.ConnectionString)
-	redisClient := redisconfig.InitializeRedisServer()
+	redisClient := redisconfig.InitializeRedisServer(conf.Redis.Address, conf.Redis.Password, conf.Redis.DB)
 	context := context.Background()
 
 	// Initializing services ...
-	service.Base.Initialize(repo, redisClient, &context, mailChan)
+	service.Base.Initialize(repo, redisClient, &context, mailChan, conf)
 	service.DoctorService.Initialize()
 	service.AccountService.Initialize()
 

@@ -2,11 +2,11 @@ package redisconfig
 
 import "github.com/go-redis/redis/v8"
 
-func InitializeRedisServer() *redis.Client {
+func InitializeRedisServer(addr string, pass string, db int) *redis.Client {
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "", // no password set
-		DB:       0,  // default db
+		Addr:     addr,
+		Password: pass,
+		DB:       db,
 	})
 	return rdb
 }

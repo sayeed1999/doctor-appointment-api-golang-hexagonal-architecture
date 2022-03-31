@@ -67,7 +67,7 @@ func (h *accountHandler) GetAuthenticatedUser(c *gin.Context) {
 
 	claims := jwt.StandardClaims{}
 	_, err = jwt.ParseWithClaims(cookie, &claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte("secureSecretKey"), nil
+		return []byte(h.conf.Jwt.SecretKey), nil
 	})
 	if err != nil {
 		helpers.Response(c, http.StatusUnauthorized, "", nil)

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/constants"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/domain"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/domain/vm"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/helpers"
@@ -68,7 +69,7 @@ func (s *doctorService) GetDoctorById(id int) (domain.Doctor, int, string) {
 		_ = pkg.InsertKeyValuePairInRedisClient(s.rdb, s.ctx, key, doctor)
 		return doctor, http.StatusOK, ""
 	} else {
-		return doctor, http.StatusNotFound, "no doctor found by the given primary key ID of doctor"
+		return doctor, http.StatusNotFound, fmt.Sprintf(constants.ApplicationMessage.ItemNotFoundByTheGivenPrimaryKeyOfItem, "Doctor", "doctor")
 	}
 
 }

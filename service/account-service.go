@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -8,6 +9,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	cons "github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/constants"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/domain"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/validators"
 	"golang.org/x/crypto/bcrypt"
@@ -32,7 +34,7 @@ func (s *accountService) Register(user domain.User) (domain.User, int, string) {
 	}
 	// email validation
 	if !validators.IsValidEmail(user.Email) {
-		return user, http.StatusBadRequest, "Email is not a valid email"
+		return user, http.StatusBadRequest, cons.ApplicationMessage.InvalidEmail
 	}
 	// password validation
 	//TODO:- currently the password is hard-coded, should not be in production
@@ -59,13 +61,13 @@ func (s *accountService) Login(email string, password string) (string, int, stri
 		return "", http.StatusInternalServerError, ""
 	}
 	if user.ID == 0 {
-		return "", http.StatusNotFound, "This email is not yet registered!"
+		return "", http.StatusNotFound, cons.ApplicationMessage.EmailNotRegistered
 	}
 
 	// hashedPasswordInBytes, _ := bcrypt.GenerateFromPassword([]byte(password), user.Cost)
 	// hashedPassword := string(hashedPasswordInBytes)
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
-		return "", http.StatusBadRequest, "Your password doesn't match!"
+		return "", http.StatusBadRequest, cons.ApplicationMessage.WrongPassword
 	}
 
 	claims := jwt.StandardClaims{
@@ -73,7 +75,7 @@ func (s *accountService) Login(email string, password string) (string, int, stri
 		Issuer:    strconv.Itoa(int(user.ID)),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signedToken, _ := token.SignedString([]byte("secureSecretKey"))
+	signedToken, _ := token.SignedString([]byte(s.conf.Jwt.SecretKey))
 
 	return signedToken, http.StatusAccepted, ""
 }
@@ -84,7 +86,7 @@ func (s *accountService) GetUserById(id int) (domain.User, int, string) {
 	_ = s.repo.FindById(&user, id)
 
 	if user.ID == 0 {
-		return user, http.StatusNotFound, "User not found"
+		return user, http.StatusNotFound, fmt.Sprintf(cons.ApplicationMessage.ItemNotFound, "User")
 	}
 	return user, http.StatusFound, ""
 }
