@@ -11,6 +11,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	cons "github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/constants"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/domain"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/repository"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/validators"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -19,11 +20,13 @@ var AccountService *accountService
 
 type accountService struct {
 	*base
+	repo *repository.AccountRepository
 }
 
-func (s *accountService) Initialize() {
+func (s *accountService) Initialize(b *base, r *repository.AccountRepository) {
 	AccountService = &accountService{
-		base: Base,
+		base: b,
+		repo: r,
 	}
 }
 

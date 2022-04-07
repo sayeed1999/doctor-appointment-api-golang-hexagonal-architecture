@@ -11,17 +11,20 @@ import (
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/domain/vm"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/helpers"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/pkg"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/repository"
 )
 
 var DoctorService *doctorService
 
 type doctorService struct {
 	*base
+	repo *repository.DoctorRepository
 }
 
-func (s *doctorService) Initialize() {
+func (s *doctorService) Initialize(b *base, r *repository.DoctorRepository) {
 	DoctorService = &doctorService{
-		base: Base,
+		base: b,
+		repo: r,
 	}
 }
 
