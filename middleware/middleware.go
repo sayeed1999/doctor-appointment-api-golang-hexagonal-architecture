@@ -13,4 +13,5 @@ func InitializeMiddlewares(router *gin.Engine) {
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
+
 }
