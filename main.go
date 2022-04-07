@@ -22,17 +22,25 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// mail config ..
 	mailChan := make(chan domain.MailData, 2) // i make a buffered channel of capacity: 2 for 2 mails at once, doctor & patient
 	mailing.ListenForMail(mailChan, conf.Mail.SmtpHost, conf.Mail.SmtpPort, conf.Mail.SenderEmail, conf.Mail.Password)
 
-	repo, _ := repository.Repository.InitializeRepository(conf.Database.ConnectionString)
+	// redis cache config ..
 	redisClient := redisconfig.InitializeRedisServer(conf.Redis.Address, conf.Redis.Password, conf.Redis.DB)
 	context := context.Background()
 
+	// Initializing database ..
+	db, _ := repository.InitializeDB(conf.Database.ConnectionString)
+
+	// Initializing repos ..
+	docRepo := repository.DoctorRepo.Initialize(db)
+	accRepo := repository.AccountRepo.Initialize(db)
+
 	// Initializing services ...
-	service.Base.Initialize(repo, redisClient, &context, mailChan, conf)
-	service.DoctorService.Initialize()
-	service.AccountService.Initialize()
+	baseSrv := service.InitializeBaseService(redisClient, &context, mailChan, conf)
+	service.DoctorService.Initialize(baseSrv, docRepo)
+	service.AccountService.Initialize(baseSrv, accRepo)
 
 	// Initializing handlers ...
 	handlers.Base.Initialize(conf)
