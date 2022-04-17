@@ -43,15 +43,21 @@ func (s *accountService) Register(user domain.User) (domain.User, int, string) {
 	// phone validation
 
 	// encrypting password with bcrypt
-	rand.Seed(time.Now().UnixNano())
-	user.Cost = rand.Intn(20) + 1
-	bytes, _ := bcrypt.GenerateFromPassword([]byte(user.Password), user.Cost)
-	user.Password = string(bytes)
+	user.Password, user.Cost = encryptPasswordWithBcrypt(user.Password)
 
 	if err := s.repo.Create(user); err != nil {
 		return user, http.StatusBadRequest, err.Error()
 	}
 	return user, http.StatusCreated, "New account has been created"
+}
+
+func encryptPasswordWithBcrypt(password string) (string, int) { // returns (hashedPassword, cost)
+	rand.Seed(time.Now().UnixNano())
+	var cost int = rand.Intn(20) + 1
+	bytes, _ := bcrypt.GenerateFromPassword([]byte(password), cost)
+	var hashedPassword string = string(bytes)
+
+	return hashedPassword, cost
 }
 
 func (s *accountService) Login(email string, password string) (string, int, string) {
