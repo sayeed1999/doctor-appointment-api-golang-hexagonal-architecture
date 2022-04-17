@@ -36,6 +36,7 @@ In this golang project, I tried to apply all the enterprise level software desig
 
 - **go.mod** & **go.sum** file are responsible for all the dependencies of the project
 - Program execution starts from main.go
+- /internal/core package is the core of the project which contains all buisness logic and is loosely coupled to the rest of the application via ports-adapters pattern
 - First, the configuration files are initialized from ./config dir
 - Second, a channel for sending mails gets created and a new goroutine is fired that keeps listening for mail sending tasks
 - Third, the central generic repository gets initialized which is responsible for database transactions
