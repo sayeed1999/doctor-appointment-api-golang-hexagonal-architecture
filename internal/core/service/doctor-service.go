@@ -57,7 +57,7 @@ func (s *doctorService) GetAllDoctors() ([]domain.Doctor, int, string) {
 func (s *doctorService) GetDoctorById(id int) (domain.Doctor, int, string) {
 	var doctor domain.Doctor
 
-	key := "doctor/" + string(id)
+	key := "doctor/" + fmt.Sprintf("%v", id)
 	val, isRetrieved, _ := pkg.RetrieveValueFromRedisClient(s.rdb, s.ctx, key)
 
 	if isRetrieved {
