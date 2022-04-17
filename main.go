@@ -6,14 +6,14 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/config"
-	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/domain"
-	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/handlers"
-	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/mailing"
-	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/middleware"
-	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/redisconfig"
-	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/repository"
-	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/route"
-	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/service"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/core/domain"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/core/service"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/handlers"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/mailing"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/middleware"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/redisconfig"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/repository"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/route"
 )
 
 func main() {
