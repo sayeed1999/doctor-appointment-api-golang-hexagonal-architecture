@@ -9,7 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/core/domain/vm"
-	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/core/service"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/core/ports"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/helpers"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/pkg"
 )
@@ -18,18 +18,20 @@ var DoctorHandler *doctorHandler
 
 type doctorHandler struct {
 	*base
+	doctorService ports.DoctorService
 }
 
-func (h *doctorHandler) Initialize() {
+func (h *doctorHandler) Initialize(docSrv ports.DoctorService) {
 	DoctorHandler = &doctorHandler{
-		base: Base,
+		base:          Base,
+		doctorService: docSrv,
 	}
 }
 
 // Gets all doctors
 
 func (h *doctorHandler) GetDoctors(c *gin.Context) {
-	doctors, code, text := service.DoctorService.GetAllDoctors()
+	doctors, code, text := h.doctorService.GetAllDoctors()
 	helpers.Response(c, code, text, doctors)
 }
 
@@ -41,7 +43,7 @@ func (h *doctorHandler) GetDoctorById(c *gin.Context) {
 		helpers.Response(c, 400, "could not parse primary key ID of doctor from route parameter", nil)
 		return
 	}
-	doctor, code, text := service.DoctorService.GetDoctorById(int(id))
+	doctor, code, text := h.doctorService.GetDoctorById(int(id))
 	helpers.Response(c, code, text, doctor)
 }
 
@@ -60,7 +62,7 @@ func (h *doctorHandler) GetDoctorsByAvailability(c *gin.Context) {
 		return
 	}
 
-	availabilities, code, text := service.DoctorService.GetDoctorsByAvailability(fromDate, toDate)
+	availabilities, code, text := h.doctorService.GetDoctorsByAvailability(fromDate, toDate)
 	helpers.Response(c, code, text, availabilities)
 }
 
@@ -91,7 +93,7 @@ func (h *doctorHandler) RequestAppointmentToDoctor(c *gin.Context) {
 		return
 	}
 
-	code, text := service.DoctorService.RequestAppointmentToDoctor(apnt)
+	code, text := h.doctorService.RequestAppointmentToDoctor(apnt)
 	// json.NewEncoder(w).Encode(message)
 	helpers.Response(c, code, text, nil)
 }

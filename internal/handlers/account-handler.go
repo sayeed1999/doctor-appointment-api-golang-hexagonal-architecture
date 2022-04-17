@@ -7,7 +7,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/core/domain"
-	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/core/service"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/core/ports"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/helpers"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/pkg"
 )
@@ -16,11 +16,13 @@ var AccountHandler *accountHandler
 
 type accountHandler struct {
 	*base
+	accountService ports.AccountService
 }
 
-func (h *accountHandler) Initialize() {
+func (h *accountHandler) Initialize(accSrv ports.AccountService) {
 	AccountHandler = &accountHandler{
-		base: Base,
+		base:           Base,
+		accountService: accSrv,
 	}
 }
 
@@ -34,7 +36,7 @@ func (h *accountHandler) Register(c *gin.Context) {
 		return
 	}
 
-	user, code, text := service.AccountService.Register(user)
+	user, code, text := h.accountService.Register(user)
 	helpers.Response(c, code, text, user)
 }
 
@@ -50,7 +52,7 @@ func (h *accountHandler) Login(c *gin.Context) {
 	email := loginData["email"]
 	password := loginData["password"]
 
-	token, code, text := service.AccountService.Login(email, password)
+	token, code, text := h.accountService.Login(email, password)
 	// fmt.Println("token: ", token)
 	c.SetCookie("jwttoken", token, 60*60*24, "/", "localhost", false, true)
 
@@ -81,7 +83,7 @@ func (h *accountHandler) GetAuthenticatedUser(c *gin.Context) {
 	// }
 
 	userid, _ := strconv.ParseInt(claims.Issuer, 10, 32)
-	user, code, text := service.AccountService.GetUserById(int(userid))
+	user, code, text := h.accountService.GetUserById(int(userid))
 
 	helpers.Response(c, code, text, user)
 	return

@@ -16,15 +16,13 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var AccountService *accountService
-
 type accountService struct {
 	*base
 	repo *repository.AccountRepository
 }
 
-func (s *accountService) Initialize(b *base, r *repository.AccountRepository) {
-	AccountService = &accountService{
+func InitializeAccountService(b *base, r *repository.AccountRepository) *accountService {
+	return &accountService{
 		base: b,
 		repo: r,
 	}
