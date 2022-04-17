@@ -9,17 +9,17 @@ import (
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/constants"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/core/domain"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/core/domain/vm"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/core/ports"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/helpers"
-	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/repository"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/pkg"
 )
 
 type doctorService struct {
 	*base
-	repo *repository.DoctorRepository
+	repo ports.DoctorRepository
 }
 
-func InitializeDoctorService(b *base, r *repository.DoctorRepository) *doctorService {
+func InitializeDoctorService(b *base, r ports.DoctorRepository) *doctorService {
 	return &doctorService{
 		base: b,
 		repo: r,

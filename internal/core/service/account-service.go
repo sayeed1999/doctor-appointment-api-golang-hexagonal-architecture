@@ -11,17 +11,17 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	cons "github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/constants"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/core/domain"
-	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/repository"
+	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/core/ports"
 	"github.com/sayeed1999/doctor-appointment-api-golang-hexagonal-architecture/internal/validators"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type accountService struct {
 	*base
-	repo *repository.AccountRepository
+	repo ports.AccountRepository
 }
 
-func InitializeAccountService(b *base, r *repository.AccountRepository) *accountService {
+func InitializeAccountService(b *base, r ports.AccountRepository) *accountService {
 	return &accountService{
 		base: b,
 		repo: r,

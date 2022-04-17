@@ -15,4 +15,5 @@ type DoctorService interface {
 }
 
 type DoctorRepository interface {
+	BaseRepository[domain.Doctor]
 }

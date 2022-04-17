@@ -9,4 +9,5 @@ type AccountService interface {
 }
 
 type AccountRepository interface {
+	BaseRepository[domain.User]
 }
