@@ -1,0 +1,20 @@
+<mat-toolbar color="primary" style="font-weight: 400; font-size: 15px; color: #efefef; height: 57px">
+    <span style="font-weight: 500; color: #fff" routerLink="/">Home</span>
+    <span>About</span>
+
+    <!-- <span routerLink="/doctors-list">Doctors</span> -->
+    <span>
+      <mat-form-field style="width: 85px">
+        <mat-label>Doctors</mat-label>
+        <mat-select>
+            <mat-option *ngFor="let doctor of doctors" routerLink="/doctors/{{doctor.ID}}" [value]="doctor.id">
+              {{doctor.name}}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </span>
+    
+    <span routerLink="/search-availability">Search Availability</span>
+    <span class="spacer"></span>
+    <span>Login</span>
+</mat-toolbar>

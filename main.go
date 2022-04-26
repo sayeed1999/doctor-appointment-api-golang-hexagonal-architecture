@@ -17,9 +17,29 @@ import (
 )
 
 func main() {
+
+	if err := run(); err != nil {
+		log.Fatal(err)
+	}
+
+	// Creates a gin router with default middleware: logger and recovery (crash-free) middleware
+	router := gin.Default()
+
+	// Initialize middlewares for this app
+	middleware.InitializeMiddlewares(router)
+
+	// Initialize routes for this app
+	route.InitializeRoutes(router)
+
+	// By default it serves on :8080 unless a PORT environment variable was defined.
+	log.Fatal(router.Run()) // router.Run(":3000") for a hard coded port
+}
+
+func run() error {
 	conf, err := config.NewConfig("./config/config.yaml")
 	if err != nil {
-		log.Fatal(err)
+		// log.Fatal(err)
+		return err
 	}
 
 	// mail config ..
@@ -31,7 +51,10 @@ func main() {
 	context := context.Background()
 
 	// Initializing database ..
-	db, _ := repository.InitializeDB(conf.Database.ConnectionString)
+	db, err := repository.InitializeDB(conf.Database.ConnectionString)
+	if err != nil {
+		return err
+	}
 
 	// Initializing repos ..
 	docRepo := repository.DoctorRepo.Initialize(db)
@@ -47,15 +70,5 @@ func main() {
 	handlers.DoctorHandler.Initialize(docSrv)
 	handlers.AccountHandler.Initialize(accSrv)
 
-	// Creates a gin router with default middleware: logger and recovery (crash-free) middleware
-	router := gin.Default()
-
-	// Initialize middlewares for this app
-	middleware.InitializeMiddlewares(router)
-
-	// Initialize routes for this app
-	route.InitializeRoutes(router)
-
-	// By default it serves on :8080 unless a PORT environment variable was defined.
-	log.Fatal(router.Run()) // router.Run(":3000") for a hard coded port
+	return nil
 }

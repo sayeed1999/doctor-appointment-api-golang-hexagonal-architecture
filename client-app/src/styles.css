@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+span {
+    padding: 0 5px;
+    font-weight: 400;
+}
+
+.spacer {
+    flex-grow: 1;
+}
+
+mat-toolbar > span {
+    cursor: pointer;
+}
+
+#footer > span {
+    color: #fff;
+    font-size: 20px;
+}
+
+a {
+    color: blue !important;
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: underline !important;
+}
+
+.container {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}

@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="row" *ngIf="doctor !== null">
+        <div class="offset-md-3 col-md-6">
+
+            <div class="row">
+                <div class="col-5">
+                    Doctor's Name
+                </div>
+                <div class="col-7">
+                    : {{ doctor.name }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-5">
+                    Email
+                </div>
+                <div class="col-7">
+                    : {{ doctor.email }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-5">
+                    Phone
+                </div>
+                <div class="col-7">
+                    : {{ doctor.phone }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-5">
+                    Speciality
+                </div>
+                <div class="col-7">
+                    : {{ "Eye, Stomach, Migraine" }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <button routerLink="appointment" mat-raised-button class="m-4" style="background-color: rgb(110, 180, 101); color: white; font-size: 16px">
+            Make an Appointment
+        </button>    
+    </div>
+</div>

@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="row">
+        <h1>Search For Availability</h1>
+    </div>
+    
+    <form [formGroup]="searchAvailabilityForm" (ngSubmit)="formSubmit()" class="row">
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>From Date</mat-label>
+            <input matInput formControlName="fromDate" (change)="dateChange()" type="date" placeholder="Pick a date" [min]="today">
+            <mat-error> {{fromDateError}} </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>To Date</mat-label>
+            <input matInput formControlName="toDate" (change)="dateChange()" type="date" placeholder="Pick a date" min="{{today}}">
+            <mat-error> {{toDateError}} </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="button-group mt-4 mb-2">
+            <button type="submit" mat-flat-button color="primary" [disabled]="searchAvailabilityForm.invalid">Search</button>
+        </div>
+    </form>
+
+    <hr>
+
+    <div class="row" *ngIf="schedules.length > 0">
+      <div class="col">
+        <h2>Our doctor's availability in your preferred timeline:-</h2>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">SL#</th>
+              <th scope="col">Date</th>
+              <th scope="col">Doctor</th>
+              <th scope="col">Appointments/Capacity</th>
+              <th scope="col">Is Available</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let sc of schedules; let i=index">
+              <th scope="row"> {{i}} </th>
+              <td> {{sc.date | date:'mediumDate'}} </td>
+              <td>
+                <a routerLink="/doctors/{{sc.doctorId}}"> {{sc.doctorName}} </a>
+              </td>
+              <td> {{sc.appointmentsToCapacityRatio}} </td>
+              <td>
+                <span class="material-icons" style="color: green;" *ngIf="sc.isAvailable"> check_circle_outline </span>
+                <span class="material-icons" style="color: red;" *ngIf="!sc.isAvailable"> dangerous </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>
